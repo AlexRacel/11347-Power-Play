@@ -1,61 +1,70 @@
+
 package org.firstinspires.ftc.teamcode.SwerveDrive;
-
-//Imports what is needed to run the program from their respective areas
-
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Gamepad;
-
-import org.firstinspires.ftc.teamcode.ExamplePrograms.SingleMotor.ExampleSingleMotorProgramming;
-
-/** Initializes TeleOp and makes the class detected as a TeleOp class */
+        import com.arcrobotics.ftclib.hardware.motors.MotorEx;
+        import com.qualcomm.hardware.bosch.BNO055IMU;
+        import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+        import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+        import com.qualcomm.robotcore.hardware.DcMotor;
+        import com.qualcomm.robotcore.hardware.DcMotorEx;
+        import com.qualcomm.robotcore.hardware.DcMotorSimple;
+        import com.qualcomm.robotcore.hardware.Gamepad;
 @TeleOp
 
-/** After initializing the TeleOp, the class has to extend LinearOpMode in order to run as a TeleOp */
-public class SwerveDriveTeleOp extends LinearOpMode {
-
-    /** Using the public variable ExampleMotorProgramming, ExampleMotroProgramming is renamed to emp in order to allow it to be called easier */
-    SwerveDriveProgramming sdp;
-
+public class SwerveDriveTeleOp extends LinearOpMode{
+    SwerveDriveProgramming smp;
+    SwerveModuleProgram smodp;
+    public DcMotorEx LeftFrontSwerveMotor = null;
+    public DcMotorEx LeftBackSwerveMotor = null;
+    public DcMotorEx RightFrontSwerveMotor = null;
+    public DcMotorEx RightBackSwerveMotor = null;
     @Override
     public void runOpMode() throws InterruptedException {
-
-/**     This creates a previous (p1) and current (c1) gamepad in order to detect
- if the controller input is being pressed vs no longer being pressed */
+        //Creates the gamepad object
         Gamepad p1 = new Gamepad();
         Gamepad c1 = new Gamepad();
+        //defines the motors
 
-/**     Defines ExampleMotor as a DcMotor and calls it from the hardwareMap
- When labled/defined in the hardwareMap, its called ExampleMotor which depending
- on how its named in the ""s it changes how it needs to be labled in the hardwareMap */
-        DcMotor LeftFrontSwerveMotor = hardwareMap.dcMotor.get("fl");
-        DcMotor LeftBackSwerveMotor = hardwareMap.dcMotor.get("bl");
-        DcMotor RightFrontSwerveMotor = hardwareMap.dcMotor.get("fr");
-        DcMotor RightBackSwerveMotor = hardwareMap.dcMotor.get("br");
 
-        //using the new name (emp) of ExampleMotorProgramming, it calls ExampleMotor from EMP */
-        sdp = new SwerveDriveProgramming(LeftFrontSwerveMotor, LeftBackSwerveMotor, RightFrontSwerveMotor, RightBackSwerveMotor);
+        LeftFrontSwerveMotor = hardwareMap.get(DcMotorEx.class, "fl");
+        LeftFrontSwerveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        LeftFrontSwerveMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        LeftFrontSwerveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        LeftFrontSwerveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+//        LeftFrontSwerveMotor.setPower(0);
+
+        LeftBackSwerveMotor = hardwareMap.get(DcMotorEx.class, "bl");
+        LeftBackSwerveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        LeftBackSwerveMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        LeftBackSwerveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        LeftFrontSwerveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+//        LeftBackSwerveMotor.setPower(0);
+
+        RightFrontSwerveMotor = hardwareMap.get(DcMotorEx.class, "fr");
+        RightFrontSwerveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RightFrontSwerveMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        RightFrontSwerveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        RightFrontSwerveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+//        RightFrontSwerveMotor.setPower(0);
+
+        RightBackSwerveMotor = hardwareMap.get(DcMotorEx.class, "bl");
+        RightBackSwerveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RightBackSwerveMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        RightBackSwerveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        RightBackSwerveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+//        RightBackSwerveMotor.setPower(0);
+
+        BNO055IMU imu = hardwareMap.get(BNO055IMU.class, "imu");
+
+        smp = new SwerveDriveProgramming(LeftFrontSwerveMotor, LeftBackSwerveMotor, RightFrontSwerveMotor, RightBackSwerveMotor, imu);
 
         Boolean pressed = false;
-
-/**     Waits to start running the program until the start button is pressed */
         waitForStart();
-
-/**     When the stop button is pressed, it exits/ends the running TeleOp */
         if (isStopRequested()) return;
-
-/**     After the start button has been pressed, until the TeleOp is stopped, will run */
         while (opModeIsActive()) {
-/**         When the left trigger is pressed on gamepad1, it gives power to the motor defined in EMP */
-            sdp.runMotor(gamepad1.left_stick_y, gamepad1.right_stick_y);
-
-
-
-/**         Simply adds a line to be printed on the phone */
-            telemetry.addLine("Example Motor Program Running");
-/**         Updates the text on the screen so it will print */
+            smp.drive(gamepad1.left_stick_x,gamepad1.left_stick_y,gamepad1.right_stick_x);
+            telemetry.addLine("Swerve Test is Running");
             telemetry.update();
         }
+
     }
 }
