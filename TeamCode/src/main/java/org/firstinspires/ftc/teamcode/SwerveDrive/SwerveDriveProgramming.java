@@ -21,7 +21,7 @@ public class SwerveDriveProgramming {
     private double offset = 0;
     private double robotAngle = 0;
     private double ANGLE_MARGIN_OF_ERROR = 5;
-    private double powerFactor= 1;
+    private double powerFactor = 1;
 
     BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
@@ -50,6 +50,7 @@ public class SwerveDriveProgramming {
     SwerveModuleState left = moduleStates[1];
     SwerveModuleProgram r = new SwerveModuleProgram(RightFrontSwerveMotor, RightBackSwerveMotor);
     SwerveModuleProgram l = new SwerveModuleProgram(LeftFrontSwerveMotor, LeftBackSwerveMotor);
+
     public void drive(double y, double x, double rx) {
         robotAngle = -imu.getAngularOrientation().firstAngle;
         robotAngle = AngleUnit.normalizeRadians(robotAngle - offset);
@@ -58,14 +59,14 @@ public class SwerveDriveProgramming {
 //        ChassisSpeeds speed = ChassisSpeeds.fromFieldRelativeSpeeds(
 //                2.0, 2.0, Math.PI / 2.0, Rotation2d.fromDegrees(45.0));
         moduleStates = diffy.toSwerveModuleStates(speed);
+
         l.updateEncoderPosition(RightFrontSwerveMotor.getCurrentPosition(), RightBackSwerveMotor.getCurrentPosition());
         r.updateEncoderPosition(LeftFrontSwerveMotor.getCurrentPosition(), LeftBackSwerveMotor.getCurrentPosition());
+
         SwerveDriveKinematics.normalizeWheelSpeeds(moduleStates, 1.680972);
-        ;
-        RightFrontSwerveMotor.setVelocity(r.moveTo(right.speedMetersPerSecond, right.angle.getDegrees(), powerFactor));
-        RightBackSwerveMotor.setVelocity(r.moveTo(right.speedMetersPerSecond, right.angle.getDegrees(), powerFactor));
-        LeftBackSwerveMotor.setVelocity(l.moveTo(left.speedMetersPerSecond, left.angle.getDegrees(), powerFactor));
-        LeftFrontSwerveMotor.setVelocity(l.moveTo(left.speedMetersPerSecond, left.angle.getDegrees(), powerFactor));
+
+        r.moveTo(right.speedMetersPerSecond, right.angle.getDegrees(), powerFactor);
+        l.moveTo(left.speedMetersPerSecond, left.angle.getDegrees(), powerFactor);
     }
 }
 
