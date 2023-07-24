@@ -24,9 +24,9 @@ public class SwerveModuleProgram {
         frontModule = front;
         backModule = back;
     }
-    public void updateEncoderPosition(int frontPosition, int backPosition){
-        this.frontPosition = frontPosition;
-        this.backPosition = backPosition;
+    public void updateEncoderPosition(){
+        frontPosition = frontModule.getCurrentPosition();
+        backPosition = backModule.getCurrentPosition();
 
     }
     public double getWheelPositionInch() {
