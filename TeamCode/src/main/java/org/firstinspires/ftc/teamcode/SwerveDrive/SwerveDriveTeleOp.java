@@ -56,10 +56,11 @@ public class SwerveDriveTeleOp extends LinearOpMode{
 
         BNO055IMU imu = hardwareMap.get(BNO055IMU.class, "imu");
 
-        smp = new SwerveDriveProgramming(LeftFrontSwerveMotor, LeftBackSwerveMotor, RightFrontSwerveMotor, RightBackSwerveMotor, imu);
+
 
         Boolean pressed = false;
         waitForStart();
+        smp = new SwerveDriveProgramming(LeftFrontSwerveMotor, LeftBackSwerveMotor, RightFrontSwerveMotor, RightBackSwerveMotor, imu);
         if (isStopRequested()) return;
         while (opModeIsActive()) {
             smp.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);

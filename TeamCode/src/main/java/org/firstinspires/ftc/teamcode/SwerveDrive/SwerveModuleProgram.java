@@ -11,9 +11,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.teamcode.SwerveDrive.SwervePID;
 
 public class SwerveModuleProgram {
-
-
-
     private double moduleAngle = 0;
     private double ANGLE_MARGIN_OF_ERROR =5;
     private DcMotorEx frontmod;
