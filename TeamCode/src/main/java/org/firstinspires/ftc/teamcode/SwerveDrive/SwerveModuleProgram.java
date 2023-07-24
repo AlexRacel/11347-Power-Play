@@ -2,40 +2,27 @@ package org.firstinspires.ftc.teamcode.SwerveDrive;
 
 import static com.arcrobotics.ftclib.purepursuit.PurePursuitUtil.angleWrap;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
-import com.arcrobotics.ftclib.kinematics.wpilibkinematics.SwerveModuleState;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-import org.firstinspires.ftc.teamcode.SwerveDrive.SwervePID;
-
 public class SwerveModuleProgram {
-    private double moduleAngle = 0;
-    private double ANGLE_MARGIN_OF_ERROR =5;
-    private DcMotorEx frontmod;
-    private DcMotorEx backmod;
-    private double rPower;
-    private double oppAngle;
-    private double angleFromTarget;
-    private double oppAngleFromTarget;
-    private double smallGearRatio = 63/18;
-    private double bigGearRatio = 23/68;
-    private double ticksPerRev = 145.1;
-    private double rotationsPerSec = 1150/60;
-    private double MAX_RPS_TICKS = rotationsPerSec * ticksPerRev;
-    private double TICKS_PER_DEGREE_BIG_GEAR = MAX_RPS_TICKS * bigGearRatio;
-    private double currentAngleTicks = 0;
-    private double currentPositionTicks = 0;
-    private double currentPosition = 0;
-    private double TICKS_PER_INCH = TICKS_PER_DEGREE_BIG_GEAR * smallGearRatio * Math.PI * 2.5;
-    private int frontPosition = 0;
-    private int backPosition = 0;
-    SwervePID PIDr = new SwervePID(1, 0, 0);
-    public SwerveModuleProgram(DcMotorEx front, DcMotorEx back) {
-        frontmod = front;
-        backmod = back;
+    private double
+            moduleAngle = 0, ANGLE_MARGIN_OF_ERROR = 5, rPower, oppAngle, angleFromTarget,
+            oppAngleFromTarget, smallGearRatio = 63/18, bigGearRatio = 23/68, ticksPerRev = 145.1,
+            rotationsPerSec = 1150/60, MAX_RPS_TICKS = rotationsPerSec * ticksPerRev,
+            TICKS_PER_DEGREE_BIG_GEAR = MAX_RPS_TICKS * bigGearRatio, currentAngleTicks = 0,
+            currentPositionTicks = 0, currentPosition = 0,
+            TICKS_PER_INCH = TICKS_PER_DEGREE_BIG_GEAR * smallGearRatio * Math.PI * 2.5;
+    private int
+            frontPosition = 0, backPosition = 0;
 
+//    Finals are simple, it just means you only set it once. Since you don't change the module, this works!
+    private final DcMotorEx
+            frontModule, backModule;
+    SwervePID PIDr = new SwervePID(1, 0, 0);
+
+    public SwerveModuleProgram(DcMotorEx front, DcMotorEx back) {
+        frontModule = front;
+        backModule = back;
     }
     public void updateEncoderPosition(int frontPosition, int backPosition){
         this.frontPosition = frontPosition;
@@ -75,8 +62,8 @@ public class SwerveModuleProgram {
             velocity = 0;
         }
 
-        frontmod.setVelocity(((-velocity * power) + rPower) * MAX_RPS_TICKS);
-        backmod.setVelocity(((velocity * power) + rPower) * MAX_RPS_TICKS);
+        frontModule.setVelocity(((-velocity * power) + rPower) * MAX_RPS_TICKS);
+        backModule.setVelocity(((velocity * power) + rPower) * MAX_RPS_TICKS);
     }
 
 
