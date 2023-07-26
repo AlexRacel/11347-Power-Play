@@ -4,6 +4,9 @@ import static com.arcrobotics.ftclib.purepursuit.PurePursuitUtil.angleWrap;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class SwerveModuleProgram {
     private double
             moduleAngle = 0, ANGLE_MARGIN_OF_ERROR = 5, rPower, oppAngle, angleFromTarget,
@@ -40,7 +43,7 @@ public class SwerveModuleProgram {
         moduleAngle = angleWrap(moduleAngle);
         return moduleAngle;
     }
-    public void moveTo(double velocity, double targetAngle, double power) {
+    public List<Double> moveTo(double velocity, double targetAngle, double power) {
 
         moduleAngle = getAngle();
         oppAngle = angleWrap(moduleAngle + 180);
@@ -61,9 +64,11 @@ public class SwerveModuleProgram {
         else if (Math.abs(angleFromTarget) > ANGLE_MARGIN_OF_ERROR) {
             velocity = 0;
         }
+        double frontModulePower = ((-velocity * power) + rPower) * MAX_RPS_TICKS;
+        double backModulePower = ((velocity * power) + rPower) * MAX_RPS_TICKS;
 
-        frontModule.setVelocity(((-velocity * power) + rPower) * MAX_RPS_TICKS);
-        backModule.setVelocity(((velocity * power) + rPower) * MAX_RPS_TICKS);
+        List<Double> powers = Arrays.asList(frontModulePower, backModulePower);
+        return powers;
     }
 
 
