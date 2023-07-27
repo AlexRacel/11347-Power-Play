@@ -25,7 +25,7 @@ public class SwerveDriveTeleOp extends CommandOpMode {
         LeftFrontSwerveMotor = hardwareMap.get(DcMotorEx.class, "fl");
         LeftBackSwerveMotor = hardwareMap.get(DcMotorEx.class, "bl");
         RightFrontSwerveMotor = hardwareMap.get(DcMotorEx.class, "fr");
-        RightBackSwerveMotor = hardwareMap.get(DcMotorEx.class, "bl");
+        RightBackSwerveMotor = hardwareMap.get(DcMotorEx.class, "br");
 
 
 //        Instead of changing every single motor, we set all their properties at once through a list.
