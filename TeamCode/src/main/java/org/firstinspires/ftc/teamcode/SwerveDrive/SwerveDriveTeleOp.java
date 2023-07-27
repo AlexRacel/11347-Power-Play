@@ -15,14 +15,9 @@ import java.util.List;
 public class SwerveDriveTeleOp extends CommandOpMode {
     SwerveDriveProgramming swerveDrive;
 
-//    This is the proper way to define multiple of the same type
-//    Side note, I tried to make these final like I did in the SwerveModuleProgram, but since I believe that
-//    DcMotorEx isn't a primitive type, it can't be assigned after the first declaration.
     public DcMotorEx
             LeftFrontSwerveMotor, LeftBackSwerveMotor, RightFrontSwerveMotor, RightBackSwerveMotor;
     BNO055IMU imu;
-    Boolean pressed = false;
-
 
     @Override
     public void initialize() {
@@ -49,7 +44,6 @@ public class SwerveDriveTeleOp extends CommandOpMode {
     }
     @Override
     public void run() {
-//        I forgot exactly what this does, need to brush up. I think it runs any stuff outside of the run function, at the top of this
         super.run();
 
         swerveDrive.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
