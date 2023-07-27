@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.SwerveDrive;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.arcrobotics.ftclib.geometry.Translation2d;
 import com.arcrobotics.ftclib.kinematics.wpilibkinematics.SwerveModuleState;
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -59,6 +61,8 @@ public class SwerveDriveProgramming {
 
         r.moveTo(right.speedMetersPerSecond, right.angle.getDegrees(), powerFactor);
         l.moveTo(left.speedMetersPerSecond, left.angle.getDegrees(), powerFactor);
+
+        telemetry.addData("Robot Angle: ", robotAngle);
     }
 }
 
