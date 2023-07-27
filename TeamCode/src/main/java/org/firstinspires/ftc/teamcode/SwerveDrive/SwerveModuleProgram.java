@@ -66,8 +66,6 @@ public class SwerveModuleProgram {
 
         frontModule.setVelocity(((-velocity * power) + rPower) * MAX_RPS_TICKS);
         backModule.setVelocity(((velocity * power) + rPower) * MAX_RPS_TICKS);
-        telemetry.addData("Front Module Velocity: ", frontModule.getVelocity());
-        telemetry.addData("Back Module Velocity: ", backModule.getVelocity());
     }
 
 
