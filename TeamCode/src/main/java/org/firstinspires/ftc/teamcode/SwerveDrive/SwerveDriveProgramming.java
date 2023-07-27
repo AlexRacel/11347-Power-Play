@@ -24,9 +24,9 @@ public class SwerveDriveProgramming {
 
     BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
-    Telemetry telemetry;
+    private Telemetry telemetry;
 
-    public SwerveDriveProgramming(List<DcMotorEx> motors, BNO055IMU imu1, Telemetry teleImport) {
+    public SwerveDriveProgramming(List<DcMotorEx> motors, BNO055IMU imu1, Telemetry telemetry) {
         LeftFrontSwerveMotor = motors.get(0);
         LeftBackSwerveMotor = motors.get(1);;
         RightFrontSwerveMotor = motors.get(2);;
@@ -35,7 +35,7 @@ public class SwerveDriveProgramming {
         imu = imu1;
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
         imu.initialize(parameters);
-        telemetry = teleImport;
+        this.telemetry = telemetry;
 
         r = new SwerveModuleProgram(RightFrontSwerveMotor, RightBackSwerveMotor, telemetry);
         l = new SwerveModuleProgram(LeftFrontSwerveMotor, LeftBackSwerveMotor, telemetry);
@@ -70,9 +70,7 @@ public class SwerveDriveProgramming {
         telemetry.addLine(String.format("Right %f %f", right.speedMetersPerSecond, right.angle.getDegrees()));
         telemetry.addLine(String.format("Left %f %f", left.speedMetersPerSecond, left.angle.getDegrees()));
         telemetry.addLine(String.format("%f", AngleUnit.RADIANS.toDegrees(robotAngle)));
-
-
-
+        telemetry.update();
     }
 }
 
