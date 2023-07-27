@@ -47,7 +47,7 @@ public class SwerveDriveProgramming {
 
     // Front right module state
 
-    public void drive(double y, double x, double rx) {
+    public double drive(double y, double x, double rx) {
         robotAngle = AngleUnit.normalizeRadians(
                 (-imu.getAngularOrientation().firstAngle) - offset
         );
@@ -56,13 +56,12 @@ public class SwerveDriveProgramming {
 //                2.0, 2.0, Math.PI / 2.0, Rotation2d.fromDegrees(45.0));
         moduleStates = diffy.toSwerveModuleStates(new ChassisSpeeds(y, -x, -rx));
 
-
         SwerveDriveKinematics.normalizeWheelSpeeds(moduleStates, 1.680972);
 
         r.moveTo(right.speedMetersPerSecond, right.angle.getDegrees(), powerFactor);
         l.moveTo(left.speedMetersPerSecond, left.angle.getDegrees(), powerFactor);
 
-        telemetry.addData("Robot Angle: ", robotAngle);
+        return robotAngle;
     }
 }
 

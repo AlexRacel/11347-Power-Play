@@ -46,7 +46,7 @@ public class SwerveDriveTeleOp extends CommandOpMode {
     public void run() {
         super.run();
 
-        swerveDrive.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
+        telemetry.addData("Angle", swerveDrive.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x));
         telemetry.addLine("Swerve Test is Running");
         telemetry.update();
 
