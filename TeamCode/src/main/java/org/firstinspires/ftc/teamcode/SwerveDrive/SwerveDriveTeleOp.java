@@ -52,7 +52,6 @@ public class SwerveDriveTeleOp extends CommandOpMode {
 //        I forgot exactly what this does, need to brush up. I think it runs any stuff outside of the run function, at the top of this
         super.run();
 
-
         swerveDrive.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
         telemetry.addLine("Swerve Test is Running");
         telemetry.update();

@@ -58,7 +58,7 @@ public class SwerveDriveProgramming {
         r.updateEncoderPosition(LeftFrontSwerveMotor.getCurrentPosition(), LeftBackSwerveMotor.getCurrentPosition());
 
         SwerveDriveKinematics.normalizeWheelSpeeds(moduleStates, 1.680972);
-        r.
+
         r.moveTo(right.speedMetersPerSecond, right.angle.getDegrees(), powerFactor);
         l.moveTo(left.speedMetersPerSecond, left.angle.getDegrees(), powerFactor);
     }
