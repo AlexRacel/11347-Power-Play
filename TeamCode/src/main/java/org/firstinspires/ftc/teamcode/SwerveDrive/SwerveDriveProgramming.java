@@ -65,17 +65,17 @@ public class SwerveDriveProgramming {
         double magnitude = Math.sqrt(y*y + x*x);
         double motor1power = 0, motor2power = 0;
 
-        motor1power = rx + y;
-        motor2power = rx - y;
+        motor1power = 1200*(rx + y);
+        motor2power = 1200*(rx - y);
 
 //        motor1power += rx;
 //        motor2power += rx;
 
-        LeftFrontSwerveMotor.setPower(motor1power);
-        LeftBackSwerveMotor.setPower(motor2power);
+        LeftFrontSwerveMotor.setVelocity(motor1power);
+        LeftBackSwerveMotor.setVelocity(motor2power);
 
-        RightFrontSwerveMotor.setPower(motor1power);
-        RightBackSwerveMotor.setPower(motor2power);
+        RightFrontSwerveMotor.setVelocity(motor1power);
+        RightBackSwerveMotor.setVelocity(motor2power);
 
 
 
