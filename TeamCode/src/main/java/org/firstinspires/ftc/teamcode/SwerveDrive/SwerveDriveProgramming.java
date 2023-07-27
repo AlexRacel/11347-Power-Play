@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.SwerveDrive;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import com.arcrobotics.ftclib.geometry.Translation2d;
 import com.arcrobotics.ftclib.kinematics.wpilibkinematics.SwerveModuleState;
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -9,7 +7,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.arcrobotics.ftclib.kinematics.wpilibkinematics.ChassisSpeeds;
 import com.arcrobotics.ftclib.kinematics.wpilibkinematics.SwerveDriveKinematics;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 import java.util.List;
@@ -62,8 +59,8 @@ public class SwerveDriveProgramming {
         SwerveDriveKinematics.normalizeWheelSpeeds(moduleStates, 1.680972);
 
         return new double [][] {
-                r.moveTo(right.speedMetersPerSecond, right.angle.getDegrees(), powerFactor),
-                l.moveTo(left.speedMetersPerSecond, left.angle.getDegrees(), powerFactor)
+                r.moduleController(right.speedMetersPerSecond, right.angle.getDegrees(), powerFactor),
+                l.moduleController(left.speedMetersPerSecond, left.angle.getDegrees(), powerFactor)
         };
 
     }

@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode.SwerveDrive;
 
 import static com.arcrobotics.ftclib.purepursuit.PurePursuitUtil.angleWrap;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -22,7 +20,6 @@ public class SwerveModuleProgram {
 //    Finals are simple, it just means you only set it once. Since you don't change the module, this works!
     private final DcMotorEx
             frontModule, backModule;
-    SwervePID PIDr = new SwervePID(1, 0, 0);
 
     Telemetry telemetry;
 
@@ -46,20 +43,23 @@ public class SwerveModuleProgram {
         moduleAngle = angleWrap(moduleAngle);
         return moduleAngle;
     }
-    public double[] moveTo(double velocity, double targetAngle, double power) {
+    public double[] moduleController(double velocity, double targetAngle, double power) {
 
         moduleAngle = getAngle();
         oppAngle = angleWrap(moduleAngle + 180);
 
+        frontModule.getVelocity();
+        backModule.getVelocity();
+
         angleFromTarget = angleWrap(targetAngle - moduleAngle);
         oppAngleFromTarget = angleWrap(targetAngle - oppAngle);
 
-        if (Math.abs(angleFromTarget) > Math.abs(oppAngleFromTarget)) {
-            rPower = PIDr.PIDControl(moduleAngle,oppAngleFromTarget);
-        }
-        else {
-            rPower = PIDr.PIDControl(moduleAngle, angleFromTarget);
-        }
+//        if (Math.abs(angleFromTarget) > Math.abs(oppAngleFromTarget)) {
+//            rPower = PIDr.PIDControl(moduleAngle,oppAngleFromTarget);
+//        }
+//        else {
+//            rPower = PIDr.PIDControl(moduleAngle, angleFromTarget);
+//        }
 
         if (Math.abs(oppAngleFromTarget) < ANGLE_MARGIN_OF_ERROR) {
             velocity = -velocity;
@@ -68,9 +68,11 @@ public class SwerveModuleProgram {
             velocity = 0;
         }
 
-        frontModule.setVelocity(((-velocity * power) + rPower) * MAX_RPS_TICKS);
-        backModule.setVelocity(((velocity * power) + rPower) * MAX_RPS_TICKS);
+//        frontModule.setVelocity(((-velocity * power) + rPower) * MAX_RPS_TICKS);
+//        backModule.setVelocity(((velocity * power) + rPower) * MAX_RPS_TICKS);
 
+        frontModule.setVelocity(1);
+        backModule.setVelocity(1);
 
         return new double[] {frontModule.getVelocity(), backModule.getVelocity()};
     }
