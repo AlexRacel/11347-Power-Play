@@ -8,6 +8,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,6 +47,10 @@ public class SwerveDriveTeleOp extends CommandOpMode {
 
 //        Initialize the other stuff here now
         imu = hardwareMap.get(BNO055IMU.class, "imu");
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
+        imu.initialize(parameters);
+
         swerveDrive = new SwerveDriveProgramming(motors, imu);
 
         telemetry.addLine("Initialized");
@@ -50,12 +59,8 @@ public class SwerveDriveTeleOp extends CommandOpMode {
     public void run() {
         super.run();
 
-        double[][] observations = swerveDrive.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
-        for (double[] moveToObject : observations) {
-            telemetry.addLine(String.format("%f %f", moveToObject[0], moveToObject[1]));
-        }
+        swerveDrive.drive(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x);
 
-        telemetry.addLine(String.format("%f %f %f", gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x));
         telemetry.addLine("Swerve Test is Running");
         telemetry.update();
 

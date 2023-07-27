@@ -10,7 +10,7 @@ public class SwerveModuleProgram {
     private double
             moduleAngle = 0, ANGLE_MARGIN_OF_ERROR = 5, rPower, oppAngle, angleFromTarget,
             oppAngleFromTarget, smallGearRatio = 63/18, bigGearRatio = 23/68, ticksPerRev = 145.1,
-            rotationsPerSec = 1150/60, MAX_RPS_TICKS = rotationsPerSec * ticksPerRev,
+            rotationsPerSec = 1150/60, MAX_RPS_TICKS = rotationsPerSec * ticksPerRev, // 2781
             TICKS_PER_DEGREE_BIG_GEAR = MAX_RPS_TICKS * bigGearRatio, currentAngleTicks = 0,
             currentPositionTicks = 0, currentPosition = 0,
             TICKS_PER_INCH = TICKS_PER_DEGREE_BIG_GEAR * smallGearRatio * Math.PI * 2.5;

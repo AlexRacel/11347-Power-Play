@@ -8,6 +8,9 @@ import com.arcrobotics.ftclib.kinematics.wpilibkinematics.ChassisSpeeds;
 import com.arcrobotics.ftclib.kinematics.wpilibkinematics.SwerveDriveKinematics;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 import java.util.List;
 
@@ -18,6 +21,7 @@ public class SwerveDriveProgramming {
     private double
             offset = 0, robotAngle = 0, ANGLE_MARGIN_OF_ERROR = 5, powerFactor = 1;
     SwerveModuleProgram r, l;
+    public List<DcMotorEx> motors;
 
     BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
@@ -26,6 +30,8 @@ public class SwerveDriveProgramming {
         LeftBackSwerveMotor = motors.get(1);;
         RightFrontSwerveMotor = motors.get(2);;
         RightBackSwerveMotor = motors.get(3);;
+
+        this.motors = motors;
 
         imu = imu1;
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
@@ -46,22 +52,47 @@ public class SwerveDriveProgramming {
 
     // Front right module state
 
-    public double[][] drive(double y, double x, double rx) {
-        robotAngle = AngleUnit.normalizeRadians(
-                (-imu.getAngularOrientation().firstAngle) - offset
-        );
+    public void drive(double x, double y, double rx) {
+        double headingOffset = 0;
+
+        Orientation orientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+        double heading = AngleUnit.normalizeRadians(orientation.firstAngle - headingOffset);
+
+//        robotAngle = AngleUnit.normalizeRadians(
+//                (-imu.getAngularOrientation().firstAngle)
+//        );
+
+        double magnitude = Math.sqrt(y*y + x*x);
+        double motor1power = 0, motor2power = 0;
+
+        motor1power = rx + y;
+        motor2power = rx - y;
+
+//        motor1power += rx;
+//        motor2power += rx;
+
+        LeftFrontSwerveMotor.setPower(motor1power);
+        LeftBackSwerveMotor.setPower(motor2power);
+
+        RightFrontSwerveMotor.setPower(motor1power);
+        RightBackSwerveMotor.setPower(motor2power);
 
 
-//        ChassisSpeeds speed = ChassisSpeeds.fromFieldRelativeSpeeds(
-//                2.0, 2.0, Math.PI / 2.0, Rotation2d.fromDegrees(45.0));
-        moduleStates = diffy.toSwerveModuleStates(new ChassisSpeeds(y, -x, -rx));
 
-        SwerveDriveKinematics.normalizeWheelSpeeds(moduleStates, 1.680972);
+//        forward --> m1 + m2 -;
+//        backward --> m1 - m2 +;
+//        cw rotation --> m1 + m2 +;
+//        ccw rotation --> m1 - m2 -;
 
-        return new double [][] {
-                r.moduleController(right.speedMetersPerSecond, right.angle.getDegrees(), powerFactor),
-                l.moduleController(left.speedMetersPerSecond, left.angle.getDegrees(), powerFactor)
-        };
+
+//        moduleStates = diffy.toSwerveModuleStates(new ChassisSpeeds(y, -x, -rx));
+//
+//        SwerveDriveKinematics.normalizeWheelSpeeds(moduleStates, 1.680972);
+
+//        return new double [][] {
+//                r.moduleController(right.speedMetersPerSecond, right.angle.getDegrees(), powerFactor),
+//                l.moduleController(left.speedMetersPerSecond, left.angle.getDegrees(), powerFactor)
+//        };
 
     }
 }
