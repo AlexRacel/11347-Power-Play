@@ -24,9 +24,7 @@ public class SwerveDriveProgramming {
 
     BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
-    private Telemetry telemetry;
-
-    public SwerveDriveProgramming(List<DcMotorEx> motors, BNO055IMU imu1, Telemetry telemetry) {
+    public SwerveDriveProgramming(List<DcMotorEx> motors, BNO055IMU imu1) {
         LeftFrontSwerveMotor = motors.get(0);
         LeftBackSwerveMotor = motors.get(1);;
         RightFrontSwerveMotor = motors.get(2);;
@@ -35,10 +33,9 @@ public class SwerveDriveProgramming {
         imu = imu1;
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
         imu.initialize(parameters);
-        this.telemetry = telemetry;
 
-        r = new SwerveModuleProgram(RightFrontSwerveMotor, RightBackSwerveMotor, telemetry);
-        l = new SwerveModuleProgram(LeftFrontSwerveMotor, LeftBackSwerveMotor, telemetry);
+        r = new SwerveModuleProgram(RightFrontSwerveMotor, RightBackSwerveMotor);
+        l = new SwerveModuleProgram(LeftFrontSwerveMotor, LeftBackSwerveMotor);
     }
 
     Translation2d rightPod = new Translation2d(0, -0.115629), leftPod = new Translation2d(0, 0.115629);
@@ -52,7 +49,7 @@ public class SwerveDriveProgramming {
 
     // Front right module state
 
-    public void drive(double y, double x, double rx) {
+    public double[][] drive(double y, double x, double rx) {
         robotAngle = AngleUnit.normalizeRadians(
                 (-imu.getAngularOrientation().firstAngle) - offset
         );
@@ -64,8 +61,11 @@ public class SwerveDriveProgramming {
 
         SwerveDriveKinematics.normalizeWheelSpeeds(moduleStates, 1.680972);
 
-        r.moveTo(right.speedMetersPerSecond, right.angle.getDegrees(), powerFactor);
-        l.moveTo(left.speedMetersPerSecond, left.angle.getDegrees(), powerFactor);
+        return new double [][] {
+                r.moveTo(right.speedMetersPerSecond, right.angle.getDegrees(), powerFactor),
+                l.moveTo(left.speedMetersPerSecond, left.angle.getDegrees(), powerFactor)
+        };
+
     }
 }
 

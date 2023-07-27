@@ -40,11 +40,18 @@ public class SwerveDriveTeleOp extends CommandOpMode {
 
 //        Initialize the other stuff here now
         imu = hardwareMap.get(BNO055IMU.class, "imu");
-        swerveDrive = new SwerveDriveProgramming(motors, imu, telemetry);
+        swerveDrive = new SwerveDriveProgramming(motors, imu);
+
+        telemetry.addLine("Initialized");
     }
     @Override
     public void run() {
         super.run();
+
+        double[][] observations = swerveDrive.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
+        for (double[] moveToObject : observations) {
+            telemetry.addLine(String.format("%f %f", moveToObject[0], moveToObject[1]));
+        }
 
         telemetry.addLine(String.format("%f %f %f", gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x));
         telemetry.addLine("Swerve Test is Running");

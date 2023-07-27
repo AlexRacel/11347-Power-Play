@@ -26,11 +26,9 @@ public class SwerveModuleProgram {
 
     Telemetry telemetry;
 
-    public SwerveModuleProgram(DcMotorEx front, DcMotorEx back, Telemetry teleImport) {
+    public SwerveModuleProgram(DcMotorEx front, DcMotorEx back) {
         frontModule = front;
         backModule = back;
-
-        telemetry = teleImport;
     }
     public void updateEncoderPosition(){
         frontPosition = frontModule.getCurrentPosition();
@@ -48,7 +46,7 @@ public class SwerveModuleProgram {
         moduleAngle = angleWrap(moduleAngle);
         return moduleAngle;
     }
-    public void moveTo(double velocity, double targetAngle, double power) {
+    public double[] moveTo(double velocity, double targetAngle, double power) {
 
         moduleAngle = getAngle();
         oppAngle = angleWrap(moduleAngle + 180);
@@ -73,8 +71,7 @@ public class SwerveModuleProgram {
         frontModule.setVelocity(((-velocity * power) + rPower) * MAX_RPS_TICKS);
         backModule.setVelocity(((velocity * power) + rPower) * MAX_RPS_TICKS);
 
-        telemetry.addData("Front Module Velocity: ", frontModule.getVelocity());
-        telemetry.addData("Back Module Velocity: ", backModule.getVelocity());
+        return new double[] {frontModule.getVelocity(), backModule.getVelocity()};
     }
 
 
