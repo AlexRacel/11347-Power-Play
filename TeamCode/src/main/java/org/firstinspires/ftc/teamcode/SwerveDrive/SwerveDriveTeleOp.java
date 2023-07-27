@@ -54,6 +54,7 @@ public class SwerveDriveTeleOp extends CommandOpMode {
         swerveDrive = new SwerveDriveProgramming(motors, imu);
 
         telemetry.addLine("Initialized");
+        telemetry.update();
     }
     @Override
     public void run() {
