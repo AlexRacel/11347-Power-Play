@@ -66,11 +66,6 @@ public class SwerveDriveProgramming {
 
         r.moveTo(right.speedMetersPerSecond, right.angle.getDegrees(), powerFactor);
         l.moveTo(left.speedMetersPerSecond, left.angle.getDegrees(), powerFactor);
-
-        telemetry.addLine(String.format("Right %f %f", right.speedMetersPerSecond, right.angle.getDegrees()));
-        telemetry.addLine(String.format("Left %f %f", left.speedMetersPerSecond, left.angle.getDegrees()));
-        telemetry.addLine(String.format("%f", AngleUnit.RADIANS.toDegrees(robotAngle)));
-        telemetry.update();
     }
 }
 
