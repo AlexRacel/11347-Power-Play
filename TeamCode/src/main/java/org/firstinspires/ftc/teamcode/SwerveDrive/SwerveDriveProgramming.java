@@ -8,6 +8,8 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.arcrobotics.ftclib.kinematics.wpilibkinematics.ChassisSpeeds;
 import com.arcrobotics.ftclib.kinematics.wpilibkinematics.SwerveDriveKinematics;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 import java.util.List;
@@ -22,7 +24,9 @@ public class SwerveDriveProgramming {
 
     BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
-    public SwerveDriveProgramming(List<DcMotorEx> motors, BNO055IMU imu1) {
+    Telemetry telemetry;
+
+    public SwerveDriveProgramming(List<DcMotorEx> motors, BNO055IMU imu1, Telemetry teleImport) {
         LeftFrontSwerveMotor = motors.get(0);
         LeftBackSwerveMotor = motors.get(1);;
         RightFrontSwerveMotor = motors.get(2);;
@@ -31,9 +35,10 @@ public class SwerveDriveProgramming {
         imu = imu1;
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
         imu.initialize(parameters);
+        telemetry = teleImport;
 
-        r = new SwerveModuleProgram(RightFrontSwerveMotor, RightBackSwerveMotor);
-        l = new SwerveModuleProgram(LeftFrontSwerveMotor, LeftBackSwerveMotor);
+        r = new SwerveModuleProgram(RightFrontSwerveMotor, RightBackSwerveMotor, telemetry);
+        l = new SwerveModuleProgram(LeftFrontSwerveMotor, LeftBackSwerveMotor, telemetry);
     }
 
     Translation2d rightPod = new Translation2d(0, -0.115629), leftPod = new Translation2d(0, 0.115629);
@@ -47,10 +52,11 @@ public class SwerveDriveProgramming {
 
     // Front right module state
 
-    public double drive(double y, double x, double rx) {
+    public void drive(double y, double x, double rx) {
         robotAngle = AngleUnit.normalizeRadians(
                 (-imu.getAngularOrientation().firstAngle) - offset
         );
+
 
 //        ChassisSpeeds speed = ChassisSpeeds.fromFieldRelativeSpeeds(
 //                2.0, 2.0, Math.PI / 2.0, Rotation2d.fromDegrees(45.0));
@@ -61,7 +67,12 @@ public class SwerveDriveProgramming {
         r.moveTo(right.speedMetersPerSecond, right.angle.getDegrees(), powerFactor);
         l.moveTo(left.speedMetersPerSecond, left.angle.getDegrees(), powerFactor);
 
-        return robotAngle;
+        telemetry.addLine(String.format("Right %f %f", right.speedMetersPerSecond, right.angle.getDegrees()));
+        telemetry.addLine(String.format("Left %f %f", left.speedMetersPerSecond, left.angle.getDegrees()));
+        telemetry.addLine(String.format("%f", AngleUnit.RADIANS.toDegrees(robotAngle)));
+
+
+
     }
 }
 

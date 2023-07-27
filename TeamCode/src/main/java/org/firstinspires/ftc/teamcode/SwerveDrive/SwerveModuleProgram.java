@@ -6,6 +6,8 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 public class SwerveModuleProgram {
     private double
             moduleAngle = 0, ANGLE_MARGIN_OF_ERROR = 5, rPower, oppAngle, angleFromTarget,
@@ -22,9 +24,13 @@ public class SwerveModuleProgram {
             frontModule, backModule;
     SwervePID PIDr = new SwervePID(1, 0, 0);
 
-    public SwerveModuleProgram(DcMotorEx front, DcMotorEx back) {
+    Telemetry telemetry;
+
+    public SwerveModuleProgram(DcMotorEx front, DcMotorEx back, Telemetry teleImport) {
         frontModule = front;
         backModule = back;
+
+        telemetry = teleImport;
     }
     public void updateEncoderPosition(){
         frontPosition = frontModule.getCurrentPosition();
@@ -66,6 +72,11 @@ public class SwerveModuleProgram {
 
         frontModule.setVelocity(((-velocity * power) + rPower) * MAX_RPS_TICKS);
         backModule.setVelocity(((velocity * power) + rPower) * MAX_RPS_TICKS);
+
+        telemetry.addLine(String.format(
+                "Velopower %f %f",
+                velocity, power
+        ));
     }
 
 

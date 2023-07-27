@@ -40,13 +40,13 @@ public class SwerveDriveTeleOp extends CommandOpMode {
 
 //        Initialize the other stuff here now
         imu = hardwareMap.get(BNO055IMU.class, "imu");
-        swerveDrive = new SwerveDriveProgramming(motors, imu);
+        swerveDrive = new SwerveDriveProgramming(motors, imu, telemetry);
     }
     @Override
     public void run() {
         super.run();
 
-        telemetry.addData("Angle", swerveDrive.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x));
+        telemetry.addLine(String.format("%f %f %f", gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x));
         telemetry.addLine("Swerve Test is Running");
         telemetry.update();
 
