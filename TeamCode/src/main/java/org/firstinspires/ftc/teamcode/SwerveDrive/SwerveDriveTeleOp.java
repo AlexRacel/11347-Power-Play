@@ -33,7 +33,7 @@ public class SwerveDriveTeleOp extends CommandOpMode {
         RightBackSwerveMotor = hardwareMap.get(DcMotorEx.class, "br");
 
 //        Instead of changing every single motor, we set all their properties at once through a list.
-        List<DcMotorEx> motors = Arrays.asList(LeftFrontSwerveMotor, LeftBackSwerveMotor, RightFrontSwerveMotor, RightBackSwerveMotor);
+        List<DcMotorEx> motors = Arrays.asList(LeftFrontSwerveMotor, LeftBackSwerveMotor, RightBackSwerveMotor, RightFrontSwerveMotor);
         for(int i = 0; i < motors.size(); i++) {
             DcMotorEx motor = motors.get(i);
             if (i % 2 == 0) motor.setDirection(DcMotorSimple.Direction.REVERSE);
