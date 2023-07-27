@@ -74,7 +74,7 @@ public class SwerveDriveProgramming {
         LeftBackSwerveMotor.setVelocity(tentiarey*(-rx - y));
 
         RightFrontSwerveMotor.setVelocity(tentiarey*(rx + y));
-        RightBackSwerveMotor.setVelocity(tentiarey*(rx + y));
+        RightBackSwerveMotor.setVelocity(tentiarey*(rx - y));
 
 
 
