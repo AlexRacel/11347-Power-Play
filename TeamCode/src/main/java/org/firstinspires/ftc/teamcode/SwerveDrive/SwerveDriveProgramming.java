@@ -56,8 +56,6 @@ public class SwerveDriveProgramming {
 //                2.0, 2.0, Math.PI / 2.0, Rotation2d.fromDegrees(45.0));
         moduleStates = diffy.toSwerveModuleStates(new ChassisSpeeds(y, -x, -rx));
 
-        l.updateEncoderPosition(RightFrontSwerveMotor.getCurrentPosition(), RightBackSwerveMotor.getCurrentPosition());
-        r.updateEncoderPosition(LeftFrontSwerveMotor.getCurrentPosition(), LeftBackSwerveMotor.getCurrentPosition());
 
         SwerveDriveKinematics.normalizeWheelSpeeds(moduleStates, 1.680972);
 
