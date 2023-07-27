@@ -71,8 +71,8 @@ public class SwerveModuleProgram {
 //        frontModule.setVelocity(((-velocity * power) + rPower) * MAX_RPS_TICKS);
 //        backModule.setVelocity(((velocity * power) + rPower) * MAX_RPS_TICKS);
 
-        frontModule.setVelocity(1);
-        backModule.setVelocity(1);
+        frontModule.setVelocity(2781);
+        backModule.setVelocity(-2781);
 
         return new double[] {frontModule.getVelocity(), backModule.getVelocity()};
     }
