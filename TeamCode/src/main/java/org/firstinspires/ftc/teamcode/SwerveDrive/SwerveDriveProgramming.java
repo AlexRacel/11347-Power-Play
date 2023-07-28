@@ -1,8 +1,13 @@
 package org.firstinspires.ftc.teamcode.SwerveDrive;
 
+import static java.lang.Math.signum;
+
+import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.arcrobotics.ftclib.controller.PDController;
 import com.arcrobotics.ftclib.geometry.Translation2d;
 import com.arcrobotics.ftclib.kinematics.wpilibkinematics.SwerveModuleState;
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.arcrobotics.ftclib.kinematics.wpilibkinematics.ChassisSpeeds;
 import com.arcrobotics.ftclib.kinematics.wpilibkinematics.SwerveDriveKinematics;
@@ -43,39 +48,43 @@ public class SwerveDriveProgramming {
 
     Translation2d rightPod = new Translation2d(0, -0.115629), leftPod = new Translation2d(0, 0.115629);
     SwerveDriveKinematics diffy = new SwerveDriveKinematics(rightPod, leftPod);
-
     ChassisSpeeds speed = new ChassisSpeeds(1.680972, 1.680972, 1.680972);
     SwerveModuleState[] moduleStates = diffy.toSwerveModuleStates(speed);
 
     // Front left module state
     SwerveModuleState right = moduleStates[0], left = moduleStates[1];
 
-    // Front right module state
 
-    public void drive(double x, double y, double rx) {
+    // Get radian angle for two measurements
+    public void drive(double x, double y, double rx, double ry) {
+
+
         double headingOffset = 0;
 
-        Orientation orientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
-        double heading = AngleUnit.normalizeRadians(orientation.firstAngle - headingOffset);
+        double kP = 0.5, kD = 0;
 
-//        robotAngle = AngleUnit.normalizeRadians(
-//                (-imu.getAngularOrientation().firstAngle)
-//        );
+//        Orientation orientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+//        double heading = AngleUnit.normalizeRadians(orientation.firstAngle - headingOffset);
 
-        double magnitude = Math.sqrt(y*y + x*x);
-        double motor1power = 0, motor2power = 0;
+//        Vector2d vec = new Vector2d(x, y).rotated(-heading); // Gives the angle that it needs to go.
+        // For example, if your wanted position is up and left (1 each),
+        // and your current robot heading is right and up ( 1 each )
+        // The vector that this vec results in is pointing straight up (90 degrees)
 
-        double tentiarey = 1200;
+//        double vecX = vec.getX();
+//        double vecY = vec.getY();
+//
+//        double targetAngle = vec.angle();
 
-//        motor1power += rx;
-//        motor2power += rx;
+        double magnitude = Math.max(rx + y, 1); // Caps at the amount
 
-        LeftFrontSwerveMotor.setVelocity(tentiarey*(-rx + y));
-        LeftBackSwerveMotor.setVelocity(tentiarey*(-rx - y));
+        // Simple Turning (The battle Begins)
 
-        RightFrontSwerveMotor.setVelocity(tentiarey*(rx + y));
-        RightBackSwerveMotor.setVelocity(tentiarey*(rx - y));
+        LeftFrontSwerveMotor.setPower((-rx + y) / magnitude);
+        LeftBackSwerveMotor.setPower((-rx - y) / magnitude);
 
+        RightFrontSwerveMotor.setPower((rx + y) / magnitude);
+        RightBackSwerveMotor.setPower((rx - y) / magnitude);
 
 
 //        forward --> m1 + m2 -;
