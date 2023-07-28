@@ -9,18 +9,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-
 import java.util.Arrays;
 import java.util.List;
 
 
-@TeleOp (name="Alex IS sideways (Demo)")
-public class SwerveDriveTeleOp extends CommandOpMode {
-    SwerveDriveProgramming swerveDrive;
+@TeleOp (name="Knowledge Kryptonite")
+public class MainTeleOp extends CommandOpMode {
+    Coordinator swerveDrive;
 
     public DcMotorEx
             LeftFrontSwerveMotor, LeftBackSwerveMotor, RightFrontSwerveMotor, RightBackSwerveMotor;
@@ -61,7 +56,7 @@ public class SwerveDriveTeleOp extends CommandOpMode {
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
         imu.initialize(parameters);
 
-        swerveDrive = new SwerveDriveProgramming(motors, imu);
+        swerveDrive = new Coordinator(motors, imu);
 
         telemetry.addLine("Initialized");
         telemetry.update();
