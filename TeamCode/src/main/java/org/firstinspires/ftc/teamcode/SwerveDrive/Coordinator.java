@@ -73,15 +73,16 @@ public class Coordinator {
 //        double vecY = vec.getY(); // How much to move forward, or backward
 //
 //        double targetAngle = vec.angle();
+        rx = rx * 0.25;
 //
-//        double magnitude = Math.max(Math.abs(rx) + Math.abs(y), 1); // Caps at the amount, works for rx+y, -rx-y
+        double magnitude = Math.max(Math.abs(rx) + Math.abs(y), 1); // Caps at the amount, works for rx+y, -rx-y
 
-//        // Simple Turning (The battle Begins)
-//        LeftFrontSwerveMotor.setPower((-rx + y) / magnitude);
-//        LeftBackSwerveMotor.setPower((-rx - y) / magnitude);
-//
-//        RightFrontSwerveMotor.setPower((rx + y) / magnitude);
-//        RightBackSwerveMotor.setPower((rx - y) / magnitude);
+        // Simple Turning (The battle Begins)
+        LeftFrontSwerveMotor.setPower((-rx + y) / magnitude);
+        LeftBackSwerveMotor.setPower((-rx - y) / magnitude);
+
+        RightFrontSwerveMotor.setPower((rx - y) / magnitude);
+        RightBackSwerveMotor.setPower((rx + y) / magnitude);
 
 
 //        forward --> m1 + m2 -;
@@ -91,13 +92,13 @@ public class Coordinator {
 
 
         // Make sure your speeds are correct values
-        moduleStates = diffy.toSwerveModuleStates(new ChassisSpeeds(y, x, -rx));
-
-        SwerveDriveKinematics.normalizeWheelSpeeds(moduleStates, 1.680972);
+//        moduleStates = diffy.toSwerveModuleStates(new ChassisSpeeds(y, x, -rx));
+//
+//        SwerveDriveKinematics.normalizeWheelSpeeds(moduleStates, 1.680972);
 
 //        return new double [][] {
-        r.moduleController(right.speedMetersPerSecond, right.angle.getDegrees(), gain);
-        l.moduleController(left.speedMetersPerSecond, left.angle.getDegrees(), gain);
+//        r.moduleController(right.speedMetersPerSecond, right.angle.getDegrees(), gain);
+//        l.moduleController(left.speedMetersPerSecond, left.angle.getDegrees(), gain);
 //        };
     }
 }

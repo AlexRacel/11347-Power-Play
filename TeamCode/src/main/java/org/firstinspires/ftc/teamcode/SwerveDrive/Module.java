@@ -93,7 +93,7 @@ public class Module {
 
         topModule.setVelocity(((velocity * power) + rPower) * (MAX_RPS_TICKS/tuner));
         bottomModule.setVelocity(((-velocity * power) + rPower) * (MAX_RPS_TICKS/tuner));
-
+//
 //        // Do the thing
 //        //TODO May need to change this to velocity later if this doesn't work
 //        topModule.setPower(
