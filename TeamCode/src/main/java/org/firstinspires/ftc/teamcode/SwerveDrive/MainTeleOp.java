@@ -56,7 +56,7 @@ public class MainTeleOp extends CommandOpMode {
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
         imu.initialize(parameters);
 
-        swerveDrive = new Coordinator(motors, imu);
+        swerveDrive = new Coordinator(telemetry, motors, imu);
 
         telemetry.addLine("Initialized");
         telemetry.update();
@@ -71,8 +71,8 @@ public class MainTeleOp extends CommandOpMode {
 
         swerveDrive.drive(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x, gamepad1.right_stick_y);
 
-        telemetry.addLine("Swerve Test is Running");
-        telemetry.update();
+
+        telemetry.update(); // Don't forget to call update() to actually send the data
 
     }
 }

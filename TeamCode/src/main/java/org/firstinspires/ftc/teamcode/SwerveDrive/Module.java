@@ -7,8 +7,9 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Module {
-    private double
-            rPower, oppositeAngle, angleToTarget, oppAngleFromTarget,
+    public double
+            rPower, oppositeAngle, angleToTarget, oppAngleFromTarget, topModuleVelocity, bottomModuleVelocity;
+    public double
             moduleAngle = 0, currentAngleTicks = 0,
             tuner = 2,
             ANGLE_MARGIN_OF_ERROR = 5,
@@ -16,7 +17,9 @@ public class Module {
             ticksPerRev = 145.1,
             rotationsPerSec = 1150/60,
             MAX_RPS_TICKS = rotationsPerSec * ticksPerRev, // 2781
-            TICKS_PER_DEGREE_BIG_GEAR = MAX_RPS_TICKS * bigGearRatio;
+    TICKS_PER_DEGREE_BIG_GEAR = 941;
+//            TICKS_PER_DEGREE_BIG_GEAR = MAX_RPS_TICKS * bigGearRatio;
+
 
     private int
             topPosition = 0, bottomPosition = 0,
@@ -25,7 +28,7 @@ public class Module {
             topOffsetDirectional = 0,
             bottomOffsetDirectional = 0;
 
-    private DcMotorEx
+    public DcMotorEx
             topModule, bottomModule;
     private PID sPID = new PID(0.0184, 0.3, 0.02);
 
@@ -52,7 +55,8 @@ public class Module {
     }
 
     public void moduleController(double velocity, double targetAngle, double power) {
-        updateEncoderPosition();
+        topPosition = topModule.getCurrentPosition();
+        bottomPosition = bottomModule.getCurrentPosition();
 
         // Get both angles for the module itself in deg.
         moduleAngle = getAngle();
@@ -91,8 +95,15 @@ public class Module {
 //            magnitude = bottomMagnitude;
 //        }
 
-        topModule.setVelocity(((velocity * power) + rPower) * (MAX_RPS_TICKS/tuner));
-        bottomModule.setVelocity(((-velocity * power) + rPower) * (MAX_RPS_TICKS/tuner));
+        topModuleVelocity = ((velocity * power) + rPower) * (MAX_RPS_TICKS/tuner);
+        bottomModuleVelocity = ((-velocity * power) + rPower) * (MAX_RPS_TICKS/tuner);
+
+
+        topModule.setVelocity(topModuleVelocity);
+        bottomModule.setVelocity(bottomModuleVelocity);
+
+//        topModule.setPower(topMagnitude/magnitude);
+//        bottomModule.setVelocity(bottomMagnitude/magnitude);
 //
 //        // Do the thing
 //        //TODO May need to change this to velocity later if this doesn't work
